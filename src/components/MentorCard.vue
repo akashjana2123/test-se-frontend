@@ -5,7 +5,7 @@
         <img v-if="mentor.avatar" :src="mentor.avatar" :alt="mentor.name" />
         <UiAvatar v-else :name="mentor.name" :size="64" />
       </div>
-      <ProgressRing :value="mentor.match" :size="50" :stroke="5" color="#14b8a6" />
+      <ProgressRing :value="mentor.match" :size="50" :stroke="5" color="#d5a64a" />
     </div>
     <div class="mt-3">
       <div class="flex items-center gap-2">
@@ -20,7 +20,7 @@
     <p class="quote small">“{{ mentor.quote }}”</p>
     <div class="flex items-center justify-between foot">
       <StatusBadge :status="mentor.available ? 'available' : 'busy'" />
-      <RouterLink :to="`/student/mentors/${mentor.id}`" class="btn btn-soft btn-sm">View profile <ArrowRight /></RouterLink>
+      <RouterLink :to="`/student/mentors/${mentor.id}`" class="btn btn-outline btn-sm view-btn">View profile <ArrowRight /></RouterLink>
     </div>
   </SpotlightCard>
 </template>
@@ -44,4 +44,6 @@ defineProps({ mentor: { type: Object, required: true } })
 .verified { width: 16px; height: 16px; color: var(--primary); flex-shrink: 0; }
 .quote { color: var(--text-2); margin-top: 12px; flex: 1; }
 .foot { margin-top: 16px; }
+.view-btn { border-color: var(--primary); color: var(--primary-text); }
+.view-btn:hover { background: var(--primary-50); }
 </style>

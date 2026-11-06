@@ -59,8 +59,36 @@
             <span v-for="(s, i) in form.skills" :key="s" class="chip active">{{ s }} <X class="x" @click="form.skills.splice(i, 1)" /></span>
           </TransitionGroup>
           <div class="add-skill">
-            <input v-model="newSkill" class="input sm" placeholder="Add skill" @keydown.enter.prevent="addSkill" />
-            <button type="button" class="btn btn-outline btn-sm btn-icon" aria-label="Add skill" @click="addSkill"><Plus /></button>
+            <div class="input-icon">
+              <Search />
+              <input
+                v-model="skillQuery"
+                class="input sm"
+                placeholder="Search skills"
+                role="combobox"
+                aria-autocomplete="list"
+                :aria-expanded="skillOpen"
+                @focus="skillOpen = true"
+                @input="skillOpen = true; activeIdx = 0"
+                @blur="skillOpen = false"
+                @keydown.down.prevent="moveActive(1)"
+                @keydown.up.prevent="moveActive(-1)"
+                @keydown.enter.prevent="addSkill(skillMatches[activeIdx])"
+                @keydown.esc="skillOpen = false"
+              />
+            </div>
+            <ul v-if="skillOpen" class="skill-menu" role="listbox">
+              <li
+                v-for="(s, i) in skillMatches"
+                :key="s"
+                role="option"
+                :aria-selected="i === activeIdx"
+                :class="{ active: i === activeIdx }"
+                @mousedown.prevent="addSkill(s)"
+                @mouseenter="activeIdx = i"
+              >{{ s }}</li>
+              <li v-if="!skillMatches.length" class="empty">{{ remainingSkills.length ? 'No matching skills' : 'All skills added' }}</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -88,10 +116,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Sparkles, Camera, Trash2, Plus, X, Check } from '@lucide/vue'
+import { ref, computed, onMounted } from 'vue'
+import { Sparkles, Camera, Trash2, Plus, X, Check, Search } from '@lucide/vue'
 import UiAvatar from '@/components/ui/UiAvatar.vue'
 import { mentorApi } from '@/api'
+import { SKILLS } from '@/mock/db'
 import { useAuthStore } from '@/stores/auth'
 import { useToast } from '@/composables/useToast'
 
@@ -99,7 +128,14 @@ const auth = useAuthStore()
 const toast = useToast()
 const form = ref(null)
 const saving = ref(false)
-const newSkill = ref('')
+const skillQuery = ref('')
+const skillOpen = ref(false)
+const activeIdx = ref(0)
+const remainingSkills = computed(() => SKILLS.filter((s) => !form.value?.skills.includes(s)))
+const skillMatches = computed(() => {
+  const q = skillQuery.value.trim().toLowerCase()
+  return q ? remainingSkills.value.filter((s) => s.toLowerCase().includes(q)) : remainingSkills.value
+})
 const topics = ['Higher studies', 'Jobs', 'Internships', 'Entrepreneurship', 'Freelancing']
 let k = 0
 
@@ -115,10 +151,17 @@ onMounted(async () => {
 })
 
 function addStep() { form.value.careerPath.push({ title: '', org: '', period: '', _k: ++k }) }
-function addSkill() {
-  const s = newSkill.value.trim()
-  if (s && !form.value.skills.includes(s)) form.value.skills.push(s)
-  newSkill.value = ''
+function moveActive(step) {
+  skillOpen.value = true
+  const n = skillMatches.value.length
+  if (n) activeIdx.value = (activeIdx.value + step + n) % n
+}
+// Only skills defined in the SKILLS list can be added
+function addSkill(s) {
+  if (!s || !SKILLS.includes(s) || form.value.skills.includes(s)) return
+  form.value.skills.push(s)
+  skillQuery.value = ''
+  activeIdx.value = 0
 }
 function pickPhoto(e) {
   const file = e.target.files?.[0]
@@ -143,8 +186,17 @@ async function save() {
 .node { position: absolute; left: -30px; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid var(--primary); }
 .input.sm { height: 36px; font-size: 13px; }
 .x { width: 14px; height: 14px; cursor: pointer; }
-.add-skill { display: flex; gap: 6px; }
-.add-skill .input { width: 140px; }
+.add-skill { position: relative; }
+.add-skill .input { width: 200px; }
+.skill-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 20;
+  width: 220px; max-height: 220px; overflow-y: auto;
+  margin: 0; padding: 4px; list-style: none;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow);
+}
+.skill-menu li { padding: 7px 10px; font-size: 13px; border-radius: 6px; cursor: pointer; }
+.skill-menu li.active { background: var(--primary-50); color: var(--primary-text); }
+.skill-menu li.empty { color: var(--muted); cursor: default; }
 label.chip { cursor: pointer; }
 @media (max-width: 760px) {
   .top { flex-direction: column; align-items: stretch; }

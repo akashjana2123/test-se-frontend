@@ -38,6 +38,7 @@ const routes = [
       { path: 'availability', name: 'availability', component: () => import('@/views/mentor/AvailabilityView.vue'), meta: { title: 'Availability' } },
       { path: 'requests', name: 'mentee-requests', component: () => import('@/views/mentor/MenteeRequests.vue'), meta: { title: 'Mentee Requests' } },
       { path: 'mentees', name: 'my-mentees', component: () => import('@/views/mentor/MyMentees.vue'), meta: { title: 'My Mentees' } },
+      { path: 'messages/:id?', name: 'mentor-messages', component: () => import('@/views/mentor/MentorMessages.vue'), meta: { title: 'Messages' } },
       { path: 'sessions', name: 'sessions', component: () => import('@/views/mentor/SessionsView.vue'), meta: { title: 'Sessions' } },
       ...shared.map((r) => ({ ...r, name: 'mentor-' + r.name }))
     ]
@@ -51,7 +52,8 @@ const routes = [
       { path: '', name: 'admin-home', component: () => import('@/views/admin/AdminOverview.vue'), meta: { title: 'Overview' } },
       { path: 'mentors', name: 'mentor-approvals', component: () => import('@/views/admin/MentorApprovals.vue'), meta: { title: 'Mentor Approvals' } },
       { path: 'mentors/:id', name: 'mentor-review', component: () => import('@/views/admin/MentorReview.vue'), meta: { title: 'Review Mentor' } },
-      { path: 'goals', name: 'career-goals', component: () => import('@/views/admin/CareerGoals.vue'), meta: { title: 'Career Goals' } },
+      { path: 'all-mentors', name: 'all-mentors', component: () => import('@/views/admin/AllMentors.vue'), meta: { title: 'All Mentors' } },
+      { path: 'all-mentees', name: 'all-mentees', component: () => import('@/views/admin/AllMentees.vue'), meta: { title: 'All Mentees' } },
       { path: 'participation', name: 'participation', component: () => import('@/views/admin/ParticipationView.vue'), meta: { title: 'Participation' } },
       { path: 'concerns', name: 'concerns', component: () => import('@/views/admin/ConcernsView.vue'), meta: { title: 'Reports' } },
       { path: 'settings', name: 'admin-settings', component: () => import('@/views/shared/SettingsView.vue'), meta: { title: 'Settings' } }

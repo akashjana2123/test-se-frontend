@@ -26,7 +26,8 @@ const props = defineProps({
   color: { type: String, default: 'indigo' }
 })
 
-const tints = { indigo: ['#eef0ff', '#4f46e5'], teal: ['#e7faf6', '#0f766e'], amber: ['#fff7e6', '#b45309'], rose: ['#fdf2f8', '#be185d'], blue: ['#eff6ff', '#1d4ed8'] }
+// Keys kept for compatibility; values mapped onto the gold palette.
+const tints = { indigo: ['#fbf4e6', '#b98a2f'], teal: ['#e8f5e9', '#2e7d32'], amber: ['#fbf1dc', '#8f6a1e'], rose: ['#f6f0e5', '#6b6559'], blue: ['#e6f0ff', '#2563eb'] }
 const tint = computed(() => tints[props.color] || tints.indigo)
 </script>
 

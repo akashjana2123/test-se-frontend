@@ -17,7 +17,7 @@
       <div class="grid main">
         <div class="card fade-up">
           <div class="card-head"><h3>Requests and completed sessions</h3></div>
-          <BarChart :key="chartKey" :labels="months" :series="[{ name: 'Mentor requests', color: '#4f46e5', values: reqs }, { name: 'Completed sessions', color: '#14b8a6', values: done }]" :height="210" />
+          <BarChart :key="chartKey" :labels="months" :series="[{ name: 'Mentor requests', color: '#d5a64a', values: reqs }, { name: 'Completed sessions', color: '#2e7d32', values: done }]" :height="210" />
         </div>
         <div class="card fade-up" style="animation-delay: 0.06s">
           <h3>Request status</h3>
@@ -28,7 +28,7 @@
       <div class="grid grid-3">
         <StatCard :icon="Users" label="Mentors available" :value="d.mentorsAvailable" color="teal" />
         <div class="card cap">
-          <ProgressRing :value="d.capacityUsed" :size="64" color="#4f46e5" />
+          <ProgressRing :value="d.capacityUsed" :size="64" color="#d5a64a" />
           <div><h4>Capacity used</h4><p class="small muted">Based on mentors' declared monthly capacity</p></div>
         </div>
         <StatCard :icon="TrendingUp" label="Requests this period" :value="reqs.reduce((a, b) => a + b, 0)" color="indigo" />
@@ -120,7 +120,7 @@ function level(t) {
 }
 const avColor = (m) => {
   const free = 1 - m.current / m.capacity
-  return free === 0 ? '#ef4444' : free < 0.35 ? '#f59e0b' : '#16a34a'
+  return free === 0 ? '#d32f2f' : free < 0.35 ? '#d5a64a' : '#2e7d32'
 }
 </script>
 
@@ -132,8 +132,8 @@ const avColor = (m) => {
 .vs { min-width: 180px; }
 .vs-bar { height: 7px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin: 3px 0; }
 .vs-bar span { display: block; height: 100%; border-radius: inherit; animation: grow 1s var(--ease) both; transform-origin: left; }
-.r { background: #4f46e5; }
-.c { background: #14b8a6; }
+.r { background: #d5a64a; }
+.c { background: #2563eb; }
 @keyframes grow { from { transform: scaleX(0); } }
 .key { display: flex; align-items: center; gap: 6px; }
 .key i { width: 10px; height: 10px; border-radius: 3px; }

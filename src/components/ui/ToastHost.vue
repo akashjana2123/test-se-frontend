@@ -26,9 +26,9 @@ import { toasts, dismiss } from '@/composables/useToast'
   box-shadow: var(--shadow-lg); cursor: pointer;
 }
 .toast svg { width: 18px; height: 18px; flex-shrink: 0; }
-.toast.success svg { color: #4ade80; }
-.toast.error svg { color: #f87171; }
-.toast.info svg { color: #93c5fd; }
+.toast.success svg { color: #81c784; }
+.toast.error svg { color: #ef9a9a; }
+.toast.info svg { color: #93b8f7; }
 .toast-enter-active, .toast-leave-active { transition: all 0.35s var(--ease); }
 .toast-enter-from { opacity: 0; transform: translateY(16px) scale(0.96); }
 .toast-leave-to { opacity: 0; transform: translateX(40px); }

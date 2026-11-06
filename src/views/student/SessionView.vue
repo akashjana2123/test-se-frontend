@@ -31,31 +31,25 @@
         </div>
 
         <div class="card chat-card fade-up" style="animation-delay: 0.12s">
-          <UiTabs v-model="tab" :tabs="[{ key: 'chat', label: 'Conversation' }, { key: 'notes', label: 'Notes' }]" />
-          <Transition name="fade" mode="out-in">
-            <div v-if="tab === 'chat'" key="c" class="chat">
-              <div ref="scroller" class="messages">
-                <TransitionGroup name="msg">
-                  <div v-for="(msg, i) in s.messages" :key="i" class="msg" :class="msg.from">
-                    <UiAvatar v-if="msg.from === 'mentor'" :src="s.mentor.avatar" :name="s.mentor.name" :size="30" />
-                    <div class="bubble">{{ msg.text }}<span>{{ msg.time }}</span></div>
-                  </div>
-                </TransitionGroup>
-                <div v-if="typing" class="msg mentor">
-                  <UiAvatar :src="s.mentor.avatar" :name="s.mentor.name" :size="30" />
-                  <div class="bubble typing"><i /><i /><i /></div>
+          <h4>Conversation</h4>
+          <div class="chat">
+            <div ref="scroller" class="messages">
+              <TransitionGroup name="msg">
+                <div v-for="(msg, i) in s.messages" :key="i" class="msg" :class="msg.from">
+                  <UiAvatar v-if="msg.from === 'mentor'" :src="s.mentor.avatar" :name="s.mentor.name" :size="30" />
+                  <div class="bubble">{{ msg.text }}<span>{{ msg.time }}</span></div>
                 </div>
+              </TransitionGroup>
+              <div v-if="typing" class="msg mentor">
+                <UiAvatar :src="s.mentor.avatar" :name="s.mentor.name" :size="30" />
+                <div class="bubble typing"><i /><i /><i /></div>
               </div>
-              <form class="composer" @submit.prevent="send">
-                <input v-model="text" class="input" placeholder="Type a message..." />
-                <button class="btn btn-primary btn-icon" :disabled="!text.trim()" aria-label="Send"><SendHorizontal /></button>
-              </form>
             </div>
-            <div v-else key="n" class="stack-sm mt-4">
-              <textarea v-model="notes" class="textarea" rows="8" placeholder="Write your takeaways from the session..." />
-              <div class="flex justify-end"><button class="btn btn-primary btn-sm" @click="saveNotes">Save notes</button></div>
-            </div>
-          </Transition>
+            <form class="composer" @submit.prevent="send">
+              <input v-model="text" class="input" placeholder="Type a message..." />
+              <button class="btn btn-primary btn-icon" :disabled="!text.trim()" aria-label="Send"><SendHorizontal /></button>
+            </form>
+          </div>
         </div>
       </div>
 
@@ -92,7 +86,6 @@
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { CalendarDays, Video, ExternalLink, SendHorizontal, FileText, PlayCircle, CircleCheck } from '@lucide/vue'
 import UiAvatar from '@/components/ui/UiAvatar.vue'
-import UiTabs from '@/components/ui/UiTabs.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import { studentApi } from '@/api'
 import { USE_MOCK } from '@/api/client'
@@ -100,9 +93,7 @@ import { useToast } from '@/composables/useToast'
 
 const toast = useToast()
 const s = ref(null)
-const tab = ref('chat')
 const text = ref('')
-const notes = ref('')
 const typing = ref(false)
 const scroller = ref(null)
 
@@ -114,7 +105,6 @@ const doneCount = computed(() => s.value.actionItems.filter((a) => a.done).lengt
 
 onMounted(async () => {
   s.value = await studentApi.getMentorship()
-  notes.value = s.value.notes
   scrollDown()
 })
 
@@ -144,10 +134,6 @@ async function send() {
 async function saveItems() {
   await studentApi.updateMentorship({ actionItems: s.value.actionItems })
 }
-async function saveNotes() {
-  await studentApi.updateMentorship({ notes: notes.value })
-  toast.success('Notes saved')
-}
 async function complete() {
   await studentApi.updateMentorship({ completed: true })
   s.value.completed = true
@@ -159,15 +145,15 @@ async function complete() {
 .layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
 .mentor-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .session-row { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; }
-.icon-box.teal { background: var(--accent-50); color: #0f766e; }
+.icon-box.teal { background: var(--info-bg); color: var(--info); }
 .chat { display: flex; flex-direction: column; margin-top: 14px; }
 .messages { height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 4px 4px 12px; }
 .msg { display: flex; gap: 8px; align-items: flex-end; max-width: 80%; }
 .msg.student { align-self: flex-end; }
 .bubble { padding: 10px 14px; border-radius: 16px; font-size: 13.5px; background: var(--surface-2); border-bottom-left-radius: 4px; }
 .bubble span { display: block; font-size: 10.5px; color: var(--muted); margin-top: 4px; }
-.student .bubble { background: var(--primary); color: #fff; border-radius: 16px 16px 4px 16px; }
-.student .bubble span { color: #c7c8f8; text-align: right; }
+.student .bubble { background: var(--primary-600); color: #fff; border-radius: 16px 16px 4px 16px; }
+.student .bubble span { color: rgba(255, 255, 255, 0.82); text-align: right; }
 .typing { display: flex; gap: 4px; padding: 14px; }
 .typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite; }
 .typing i:nth-child(2) { animation-delay: 0.15s; }

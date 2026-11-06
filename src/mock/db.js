@@ -16,14 +16,29 @@ import resStartup from '@/assets/img/res-startup.jpg'
 
 export const CAREER_GOALS = ['Internships', 'Jobs', 'Higher studies', 'Freelancing', 'Entrepreneurship']
 export const SKILLS = ['Python', 'Data Analysis', 'Machine Learning', 'Communication', 'Leadership', 'Design', 'Product Management', 'Java', 'SQL', 'Public Speaking']
-export const INTERESTS = ['AI/ML', 'Web Development', 'Product Management', 'Research', 'Consulting', 'Startups', 'Design', 'Data Science']
-export const DOMAINS = ['Engineering', 'Product', 'Data Science', 'Entrepreneurship', 'Research']
+
+export const DEGREES = [
+  'B.S. – Electronics and Communication',
+  'B.S. – Data Science and Applications',
+  'B.S. - Buisiness Management'
+]
+
+export const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year']
+export const LEVEL = ['Foundational', 'Diploma', 'BSc', 'B.S']
+
+// Chat between Ananya (student s1 / mentee me1) and Rohit (mentor m1).
+// The same array is used by the student's mentorship and the mentor's conversations,
+// so messages sent from either side show up on the other.
+const ananyaChat = [
+  { from: 'mentor', text: 'Hi Ananya! Looking forward to our session. Feel free to share any specific questions you have.', time: '10:14 AM' },
+  { from: 'student', text: "Thanks! I'm particularly interested in learning about product internships and key skills to focus on.", time: '10:16 AM' }
+]
 
 const db = {
   users: [
     {
       id: 's1', role: 'student', name: 'Ananya Sharma', email: 'student@demo.com', avatar: ananya,
-      institute: 'Riverside Institute of Technology', degree: 'B.Tech – Computer Science and Engineering', year: '3rd Year',
+      degree: 'B.Tech – Computer Science and Engineering', year: '3rd Year',
       skills: ['Python', 'Data Analysis', 'Machine Learning'],
       interests: ['AI/ML', 'Web Development', 'Product Management'],
       goals: ['Internships'], otherGoal: '', profileCompletion: 80
@@ -130,10 +145,7 @@ const db = {
   mentorship: {
     mentorId: 'm1',
     session: { date: 'Wed, 4 Nov 2026', time: '4:00 – 4:30 PM (IST)', link: 'https://meet.google.com/xyz-abcd-efg' },
-    messages: [
-      { from: 'mentor', text: 'Hi Ananya! Looking forward to our session. Feel free to share any specific questions you have.', time: '10:14 AM' },
-      { from: 'student', text: "Thanks! I'm particularly interested in learning about product internships and key skills to focus on.", time: '10:16 AM' }
-    ],
+    messages: ananyaChat,
     notes: 'Focus on one product case study before the next session.',
     actionItems: [
       { id: 1, text: 'Review recommended resources', done: true },
@@ -144,25 +156,98 @@ const db = {
     completed: false
   },
 
+  // Student profiles a mentor can view from a request (matches the Student table:
+  // academic_level, programme, dual_degree, bio, career_goal, LinkedIn + StudentSkills)
+  studentProfiles: [
+    {
+      id: 'st1', name: 'Karan Patel', avatar: karan, email: 'karan.patel@demo.com', institute: 'National College of Commerce',
+      academicLevel: 'B.S', programme: 'B.S. - Buisiness Management', year: '4th Year', dualDegree: '',
+      bio: 'Final-year commerce student who runs a small campus thrift store. Curious about turning side projects into real businesses.',
+      careerGoal: 'Entrepreneurship', skills: ['Communication', 'Leadership', 'Public Speaking'],
+      interests: ['Startups', 'Marketing', 'Finance'], linkedin: 'https://www.linkedin.com/in/karan-patel-demo',
+      joinedOn: 'Aug 2026', pastMentorships: 0
+    },
+    {
+      id: 'st2', name: 'Ishita Roy', avatar: null, email: 'ishita.roy@demo.com', institute: 'Riverside Institute of Technology',
+      academicLevel: 'Diploma', programme: 'B.S. – Data Science and Applications', year: '2nd Year', dualDegree: 'B.S. – Electronics and Communication',
+      bio: 'Second-year student who enjoys building small web apps and wants to understand how product decisions get made.',
+      careerGoal: 'Jobs', skills: ['Python', 'SQL', 'Design'],
+      interests: ['Product Management', 'UX Research', 'Web Development'], linkedin: 'https://www.linkedin.com/in/ishita-roy-demo',
+      joinedOn: 'Jul 2026', pastMentorships: 1
+    },
+    {
+      id: 'st3', name: 'Dev Malhotra', avatar: null, email: 'dev.malhotra@demo.com', institute: 'Westbridge Business School',
+      academicLevel: 'BSc', programme: 'B.S. - Buisiness Management', year: '1st Year', dualDegree: '',
+      bio: 'MBA student with two years of analyst experience, preparing for product internship interviews this winter.',
+      careerGoal: 'Internships', skills: ['Data Analysis', 'Product Management', 'Communication'],
+      interests: ['Case Interviews', 'Consumer Tech'], linkedin: '',
+      joinedOn: 'Sep 2026', pastMentorships: 0
+    },
+    {
+      id: 'st4', name: 'Sara Khan', avatar: null, email: 'sara.khan@demo.com', institute: 'City College',
+      academicLevel: 'BSc', programme: 'B.S. – Data Science and Applications', year: '3rd Year', dualDegree: '',
+      bio: 'Interested in pursuing a master\'s in data science abroad and shortlisting universities.',
+      careerGoal: 'Higher studies', skills: ['Python', 'Machine Learning'], mentorId: 'mn3', // matched with Sneha after Rohit declined
+      interests: ['Research', 'Statistics'], linkedin: 'https://www.linkedin.com/in/sara-khan-demo',
+      joinedOn: 'Jun 2026', pastMentorships: 2
+    },
+    {
+      // Ananya is the demo student account (users.s1)
+      id: 's1', name: 'Ananya Sharma', avatar: ananya, email: 'student@demo.com', institute: 'Riverside Institute of Technology',
+      academicLevel: 'BSc', programme: 'B.S. – Data Science and Applications', year: '3rd Year', dualDegree: '',
+      bio: 'Third-year student who loves turning data into product decisions. Working towards a product management role.',
+      careerGoal: 'Internships', skills: ['Python', 'Data Analysis', 'Machine Learning'],
+      interests: ['AI/ML', 'Web Development', 'Product Management'], linkedin: 'https://www.linkedin.com/in/ananya-sharma-demo',
+      joinedOn: 'Jun 2026', pastMentorships: 0
+    },
+    {
+      id: 'st5', name: 'Aman Gupta', avatar: null, email: 'aman.gupta@demo.com', institute: 'Pune Institute of Engineering',
+      academicLevel: 'B.S', programme: 'B.S. – Electronics and Communication', year: '4th Year', dualDegree: 'B.S. – Data Science and Applications',
+      bio: 'Final-year student preparing for product analyst roles. Enjoys guesstimates and dashboarding.',
+      careerGoal: 'Jobs', skills: ['SQL', 'Data Analysis', 'Communication'],
+      interests: ['Analytics', 'Consumer Tech'], linkedin: '',
+      joinedOn: 'May 2026', pastMentorships: 1
+    }
+  ],
+
   // Mentor side (Rohit)
   incomingRequests: [
-    { id: 'ir1', name: 'Karan Patel', avatar: karan, course: 'B.Com, Final Year', institute: 'National College of Commerce', goal: 'Explore opportunities in entrepreneurship and understand how to validate and start a business.', topic: 'Entrepreneurship', message: "I'm very interested in starting my own business after graduation. I'd love to get your guidance on idea validation and early steps.", receivedAgo: '2 days ago', status: 'pending', mode: 'Video call' },
-    { id: 'ir2', name: 'Ishita Roy', avatar: null, course: 'B.Tech CSE, 2nd Year', institute: 'Riverside Institute of Technology', goal: 'Pursue a career in product management and learn how to transition from a technical role.', topic: 'Jobs', message: "I've been following your work and would love to learn how to break into product and what skills I should start building in college.", receivedAgo: '4 days ago', status: 'pending', mode: 'Chat' },
-    { id: 'ir3', name: 'Dev Malhotra', avatar: null, course: 'MBA, 1st Year', institute: 'Westbridge Business School', goal: 'Prepare for product internship interviews.', topic: 'Internships', message: 'Could you help me with case interview preparation?', receivedAgo: '1 week ago', status: 'accepted', mode: 'Video call' },
-    { id: 'ir4', name: 'Sara Khan', avatar: null, course: 'B.Sc, Final Year', institute: 'City College', goal: 'Higher studies abroad.', topic: 'Higher studies', message: 'Need help choosing universities.', receivedAgo: '2 weeks ago', status: 'declined', mode: 'Chat', reason: 'Outside my area, please consider Sneha Iyer.' }
+    { id: 'ir1', studentId: 'st1', name: 'Karan Patel', avatar: karan, course: 'B.Com, Final Year', institute: 'National College of Commerce', goal: 'Explore opportunities in entrepreneurship and understand how to validate and start a business.', topic: 'Entrepreneurship', message: "I'm very interested in starting my own business after graduation. I'd love to get your guidance on idea validation and early steps.", receivedAgo: '2 days ago', status: 'pending', mode: 'Video call' },
+    { id: 'ir2', studentId: 'st2', name: 'Ishita Roy', avatar: null, course: 'B.Tech CSE, 2nd Year', institute: 'Riverside Institute of Technology', goal: 'Pursue a career in product management and learn how to transition from a technical role.', topic: 'Jobs', message: "I've been following your work and would love to learn how to break into product and what skills I should start building in college.", receivedAgo: '4 days ago', status: 'pending', mode: 'Chat' },
+    { id: 'ir3', studentId: 'st3', name: 'Dev Malhotra', avatar: null, course: 'MBA, 1st Year', institute: 'Westbridge Business School', goal: 'Prepare for product internship interviews.', topic: 'Internships', message: 'Could you help me with case interview preparation?', receivedAgo: '1 week ago', status: 'accepted', mode: 'Video call' },
+    { id: 'ir4', studentId: 'st4', name: 'Sara Khan', avatar: null, course: 'B.Sc, Final Year', institute: 'City College', goal: 'Higher studies abroad.', topic: 'Higher studies', message: 'Need help choosing universities.', receivedAgo: '2 weeks ago', status: 'declined', mode: 'Chat', reason: 'Outside my area, please consider Sneha Iyer.' }
   ],
 
   mentees: [
-    { id: 'me1', name: 'Ananya Sharma', avatar: ananya, course: 'B.Tech Computer Science, 3rd Year', institute: 'Riverside Institute of Technology', goal: 'Transition to a product management role', nextSession: 'Wed, 4 Nov 2026 · 4:00 PM', lastNote: 'Discussed resume edits and product portfolio. Shared useful resources.', progress: 60 },
-    { id: 'me2', name: 'Aman Gupta', avatar: null, course: 'B.Tech IT, Final Year', institute: 'Pune Institute of Engineering', goal: 'Crack product analyst interviews', nextSession: 'Fri, 6 Nov 2026 · 7:00 PM', lastNote: 'Covered metrics questions and guesstimates.', progress: 35 }
+    { id: 'me1', studentId: 's1', name: 'Ananya Sharma', avatar: ananya, course: 'B.Tech Computer Science, 3rd Year', institute: 'Riverside Institute of Technology', goal: 'Transition to a product management role', nextSession: 'Wed, 4 Nov 2026 · 4:00 PM', lastNote: 'Discussed resume edits and product portfolio. Shared useful resources.', progress: 60 },
+    { id: 'me2', studentId: 'st5', name: 'Aman Gupta', avatar: null, course: 'B.Tech IT, Final Year', institute: 'Pune Institute of Engineering', goal: 'Crack product analyst interviews', nextSession: 'Fri, 6 Nov 2026 · 7:00 PM', lastNote: 'Covered metrics questions and guesstimates.', progress: 35 }
   ],
+
+  // Mentor's conversations, keyed by mentee id. from: 'mentor' | 'student'
+  mentorChats: {
+    me1: ananyaChat,
+    me2: [
+      { from: 'student', text: 'Hi Rohit, I tried the guesstimate you shared. I got about 2.4M for daily cab rides in Bengaluru.', time: 'Yesterday' },
+      { from: 'mentor', text: 'Good attempt! Walk me through your assumptions on Friday. Also try one metrics question for a food delivery app.', time: 'Yesterday' },
+      { from: 'student', text: 'Will do. Should I focus on retention or engagement metrics?', time: '9:42 AM' }
+    ]
+  },
 
   availability: {
     available: true,
     maxMentees: 3,
-    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    times: ['9:00 – 11:00 AM', '11:00 AM – 1:00 PM', '2:00 – 4:00 PM', '4:00 – 6:00 PM', '7:00 – 9:00 PM'],
-    slots: ['0-0', '0-2', '1-1', '1-3', '2-4', '3-0', '3-5', '4-1', '4-6']
+    timezone: 'IST',
+    // Weekly schedule: each day can be switched on/off and hold one or more
+    // time ranges (24h "HH:mm"). Ranges on a day must not overlap and end > start.
+    schedule: [
+      { day: 'Monday', enabled: true, ranges: [{ start: '09:00', end: '12:00' }, { start: '14:00', end: '17:00' }] },
+      { day: 'Tuesday', enabled: true, ranges: [{ start: '18:00', end: '21:00' }] },
+      { day: 'Wednesday', enabled: true, ranges: [{ start: '09:00', end: '11:00' }] },
+      { day: 'Thursday', enabled: false, ranges: [{ start: '09:00', end: '17:00' }] },
+      { day: 'Friday', enabled: true, ranges: [{ start: '17:00', end: '20:00' }] },
+      { day: 'Saturday', enabled: true, ranges: [{ start: '10:00', end: '13:00' }, { start: '15:00', end: '18:00' }] },
+      { day: 'Sunday', enabled: false, ranges: [{ start: '10:00', end: '12:00' }] }
+    ]
   },
 
   mentorSessions: [
@@ -201,10 +286,10 @@ const db = {
   // ===== Admin =====
   adminStats: { totalStudents: 1248, approvedMentors: 312, pendingRequests: 87, activeMentorships: 426, completedSessions: 1892 },
   requestStatus: [
-    { label: 'Accepted', value: 184, color: '#16a34a' },
-    { label: 'Pending', value: 87, color: '#f59e0b' },
-    { label: 'Declined', value: 52, color: '#ef4444' },
-    { label: 'Inactive', value: 78, color: '#a1a1b5' }
+    { label: 'Accepted', value: 184, color: '#2e7d32' },
+    { label: 'Pending', value: 87, color: '#d5a64a' },
+    { label: 'Declined', value: 52, color: '#d32f2f' },
+    { label: 'Inactive', value: 78, color: '#b8af9e' }
   ],
 
   mentorApplications: [
@@ -233,16 +318,6 @@ const db = {
     { id: 'ap5', name: 'Sneha Iyer', avatar: sneha, role: 'Data Scientist', company: 'AI Research Labs', location: 'Chennai, India', careerPath: 'Data Science', expertise: ['Data Science'], submitted: '18 Jun 2026', status: 'approved', experience: '5 years', summary: '', topics: [], bio: '', checklist: {} },
     { id: 'ap6', name: 'Vikas Jain', avatar: null, role: 'Sales Executive', company: 'QuickMart', location: 'Jaipur, India', careerPath: 'Sales', expertise: ['Sales'], submitted: '3 Jun 2026', status: 'rejected', experience: '1 year', summary: '', topics: [], bio: '', checklist: {} }
   ],
-
-  careerGoalRequests: [
-    { id: 'cg1', goal: 'Climate Policy', requester: 'Student', requesterName: 'Riya Das', rationale: 'Interested in careers at the intersection of climate and public policy.', date: '29 Oct 2026', status: 'pending' },
-    { id: 'cg2', goal: 'UX Writing', requester: 'Student', requesterName: 'Kabir Shah', rationale: 'Want to explore UX writing opportunities in product teams.', date: '27 Oct 2026', status: 'pending' },
-    { id: 'cg3', goal: 'Higher education admissions support', requester: 'Mentor', requesterName: 'Karthik Iyer', rationale: 'Can guide students on university applications, SOPs and interview preparation.', date: '25 Oct 2026', status: 'pending' },
-    { id: 'cg4', goal: 'Game Development', requester: 'Student', requesterName: 'Arnav Bose', rationale: 'Passionate about game design and development careers.', date: '22 Oct 2026', status: 'pending' },
-    { id: 'cg5', goal: 'Data roles', requester: 'Mentor', requesterName: 'Neha Sharma', rationale: 'High student demand for analytics careers.', date: '10 Sep 2026', status: 'approved' },
-    { id: 'cg6', goal: 'Astrology', requester: 'Student', requesterName: 'Anonymous', rationale: 'Not related to career guidance.', date: '2 Sep 2026', status: 'declined' }
-  ],
-  approvedGoals: ['Internships', 'Jobs & placements', 'Higher studies', 'Freelancing', 'Entrepreneurship', 'Data roles'],
 
   participation: {
     months: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],

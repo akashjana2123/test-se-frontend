@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="match">
-            <ProgressRing :value="m.match" :size="72" color="#14b8a6" />
+            <ProgressRing :value="m.match" :size="72" color="#d5a64a" />
             <span class="small muted">Match</span>
           </div>
         </div>
@@ -114,7 +114,7 @@ onMounted(async () => {
 .timeline li:first-child .node { background: var(--primary); animation: pulseRing 1.8s infinite; }
 .slots { position: sticky; top: 88px; }
 .slot { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 550; transition: all 0.2s var(--ease); }
-.slot:hover { border-color: var(--primary-100); background: #fafaff; }
+.slot:hover { border-color: var(--primary-100); background: #fdfaf4; }
 .slot.active { border-color: var(--primary); background: var(--primary-50); }
 .slot .ic { color: var(--muted); }
 .disabled { opacity: 0.5; pointer-events: none; }

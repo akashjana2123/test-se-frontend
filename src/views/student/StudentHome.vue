@@ -15,7 +15,7 @@
           <h4>Profile completion</h4>
           <p class="small muted">{{ (profile?.profileCompletion ?? 0) < 100 ? 'Add a few more details for better matches.' : 'Your profile is complete.' }}</p>
         </div>
-        <RouterLink to="/student/profile" class="btn btn-outline btn-sm">{{ (profile?.profileCompletion ?? 0) < 100 ? 'Complete' : 'Edit' }}</RouterLink>
+        <RouterLink to="/student/profile" class="btn btn-soft btn-sm">{{ (profile?.profileCompletion ?? 0) < 100 ? 'Complete' : 'Edit' }}</RouterLink>
       </div>
 
       <div class="card session">
@@ -25,16 +25,16 @@
           <p v-if="ship" class="small muted">{{ ship.session.date }} · {{ ship.session.time }}</p>
           <div v-else class="skeleton" style="height: 14px; width: 70%" />
         </div>
-        <RouterLink to="/student/messages" class="btn btn-soft btn-sm">Open</RouterLink>
+        <RouterLink to="/student/messages" class="btn btn-success-soft btn-sm">Open</RouterLink>
       </div>
 
       <div class="card session">
-        <div class="icon-box" style="background: #fff7e6; color: #b45309"><Hourglass /></div>
+        <div class="icon-box"><Hourglass /></div>
         <div class="grow">
           <h4>Requests</h4>
           <p class="small muted">{{ pendingCount }} pending · one active request at a time</p>
         </div>
-        <RouterLink to="/student/requests" class="btn btn-soft btn-sm">Track</RouterLink>
+        <RouterLink to="/student/requests" class="btn btn-info-soft btn-sm">Track</RouterLink>
       </div>
     </div>
 
@@ -55,7 +55,6 @@
       <h3>Search and filter mentors</h3>
       <form class="filters mt-4" @submit.prevent="go">
         <div class="input-icon grow"><Search /><input v-model="f.q" class="input" placeholder="Search by name, skills, company..." /></div>
-        <select v-model="f.domain" class="select"><option value="">All domains</option><option v-for="d in DOMAINS" :key="d">{{ d }}</option></select>
         <select v-model="f.availability" class="select"><option value="">Any availability</option><option value="available">Available now</option></select>
         <button class="btn btn-primary">Search</button>
       </form>
@@ -70,7 +69,6 @@ import { Hand, Search, CalendarDays, Hourglass, ArrowRight } from '@lucide/vue'
 import ProgressRing from '@/components/ui/ProgressRing.vue'
 import MentorCard from '@/components/MentorCard.vue'
 import { studentApi } from '@/api'
-import { DOMAINS } from '@/mock/db'
 import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
@@ -102,7 +100,7 @@ function go() {
 
 <style scoped>
 .completion, .session { display: flex; align-items: center; gap: 14px; }
-.wave { width: 26px; height: 26px; color: #f59e0b; transform-origin: 70% 80%; animation: wave 2s ease-in-out 0.4s 2; }
+.wave { width: 26px; height: 26px; color: var(--primary); transform-origin: 70% 80%; animation: wave 2s ease-in-out 0.4s 2; }
 @keyframes wave { 0%, 60%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(16deg); } 20%, 40% { transform: rotate(-8deg); } }
 .filters { display: flex; gap: 10px; flex-wrap: wrap; }
 .filters .select { width: auto; min-width: 170px; }

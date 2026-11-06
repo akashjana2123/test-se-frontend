@@ -9,7 +9,6 @@
 
     <div class="card filters">
       <div class="input-icon grow"><Search /><input v-model="f.q" class="input" placeholder="Search by name, skills, company..." /></div>
-      <select v-model="f.domain" class="select"><option value="">All domains</option><option v-for="d in DOMAINS" :key="d">{{ d }}</option></select>
       <select v-model="f.goal" class="select"><option value="">All goals</option><option v-for="g in CAREER_GOALS" :key="g">{{ g }}</option></select>
       <select v-model="f.availability" class="select"><option value="">Any availability</option><option value="available">Available now</option></select>
       <select v-model="f.sort" class="select"><option value="match">Best match</option><option value="experience">Most experience</option></select>
@@ -35,7 +34,7 @@ import { Search, RotateCcw } from '@lucide/vue'
 import MentorCard from '@/components/MentorCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { studentApi } from '@/api'
-import { DOMAINS, CAREER_GOALS } from '@/mock/db'
+import { CAREER_GOALS } from '@/mock/db'
 
 const route = useRoute()
 const router = useRouter()

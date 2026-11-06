@@ -120,23 +120,23 @@ async function submit() {
 </script>
 
 <style scoped>
-.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 85% 10%, #e0e3ff, transparent 40%), radial-gradient(circle at 10% 90%, #ccfbf1, transparent 35%), var(--bg); }
+.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 85% 10%, var(--primary-100), transparent 40%), radial-gradient(circle at 10% 90%, #f3e9d6, transparent 35%), var(--bg); }
 .auth-card { width: 100%; max-width: 1080px; display: grid; grid-template-columns: 0.85fr 1.15fr; background: var(--surface); border-radius: 26px; overflow: hidden; box-shadow: var(--shadow-lg); animation: pop 0.6s var(--ease); }
-.panel { display: flex; flex-direction: column; padding: 36px 36px 0; background: #ecebfc; overflow: hidden; }
+.panel { display: flex; flex-direction: column; padding: 36px 36px 0; background: linear-gradient(160deg, #fdf9f1, #f8eedb 70%, #f4e2bd); overflow: hidden; }
 .panel h2 { font-size: 2rem; font-weight: 800; margin-top: 30px; }
 .ill { margin-top: auto; width: calc(100% + 72px); margin-left: -36px; max-width: none; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%); mask-image: linear-gradient(to bottom, transparent, #000 15%); }
 .form-side { padding: 40px 44px; }
 .form-inner { display: flex; flex-direction: column; gap: 18px; }
 .strength { display: flex; gap: 4px; }
 .strength span { flex: 1; height: 4px; border-radius: 4px; background: var(--surface-2); transition: background 0.3s; }
-.strength span.on:nth-child(1) { background: #ef4444; }
-.strength span.on:nth-child(2) { background: #f59e0b; }
-.strength span.on:nth-child(3) { background: #22c55e; }
-.strength span.on:nth-child(4) { background: #16a34a; }
+.strength span.on:nth-child(1) { background: var(--danger); }
+.strength span.on:nth-child(2) { background: var(--primary); }
+.strength span.on:nth-child(3) { background: #66bb6a; }
+.strength span.on:nth-child(4) { background: var(--success); }
 .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .role { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border-strong); background: var(--surface); transition: all 0.3s var(--ease); }
-.role:hover { border-color: #a5a6f6; transform: translateY(-2px); }
-.role.active { border-color: var(--primary); background: var(--primary-50); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08); }
+.role:hover { border-color: #e7cc92; transform: translateY(-2px); }
+.role.active { border-color: var(--primary); background: var(--primary-50); box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.14); }
 .role-ic { width: 30px; height: 30px; color: var(--primary); margin-bottom: 4px; transition: transform 0.4s var(--ease); }
 .role.active .role-ic { transform: scale(1.12) rotate(-6deg); }
 .radio { position: absolute; top: 12px; right: 12px; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border-strong); transition: all 0.25s; }

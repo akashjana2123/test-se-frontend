@@ -25,7 +25,7 @@
             <b>{{ m.name }}</b>
             <p class="small muted">{{ m.title }} at {{ m.company }}</p>
           </div>
-          <ProgressRing :value="m.match" :size="48" :stroke="5" color="#14b8a6" />
+          <ProgressRing :value="m.match" :size="48" :stroke="5" color="#d5a64a" />
         </div>
         <div v-else class="skeleton" style="height: 76px" />
 
@@ -94,10 +94,10 @@ async function send() {
 
 <style scoped>
 .wrap-narrow { max-width: 680px; margin: 0 auto; }
-.mentor-row { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: #fafaff; }
+.mentor-row { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: #fdfaf4; }
 .done { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 48px 24px; }
-.check { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: var(--success-bg); color: #16a34a; margin-bottom: 8px; animation: pop 0.5s var(--ease), pulseGreen 1.6s 0.5s 2; }
+.check { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: var(--success-bg); color: var(--success); margin-bottom: 8px; animation: pop 0.5s var(--ease), pulseGreen 1.6s 0.5s 2; }
 .check svg { width: 36px; height: 36px; stroke-width: 3; stroke-dasharray: 30; stroke-dashoffset: 30; animation: drawCheck 0.5s 0.3s forwards; }
 @keyframes drawCheck { to { stroke-dashoffset: 0; } }
-@keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.35); } 100% { box-shadow: 0 0 0 18px rgba(22, 163, 74, 0); } }
+@keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.35); } 100% { box-shadow: 0 0 0 18px rgba(46, 125, 50, 0); } }
 </style>

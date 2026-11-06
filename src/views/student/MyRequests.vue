@@ -32,7 +32,6 @@
           </div>
 
           <template v-if="r.status === 'pending'">
-            <div class="info-row"><CalendarDays /> Calendar invite will be available once your request is accepted. <button class="btn btn-outline btn-sm" disabled>View calendar</button></div>
             <div class="info-row"><MessageSquare /> Messaging will be enabled after acceptance. <button class="btn btn-outline btn-sm" disabled>Open chat</button></div>
             <button class="btn btn-danger-outline btn-sm mt-3" @click="toCancel = r">Cancel request</button>
           </template>
@@ -126,10 +125,10 @@ async function cancel() {
 .st { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; font-size: 13px; }
 .st-dot { position: relative; z-index: 1; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border-strong); background: #fff; display: grid; place-items: center; margin-bottom: 6px; }
 .st-dot svg { width: 14px; height: 14px; color: #fff; stroke-width: 3; }
-.st.done .st-dot { background: #16a34a; border-color: #16a34a; animation: pop 0.4s var(--ease); }
+.st.done .st-dot { background: var(--success); border-color: var(--success); animation: pop 0.4s var(--ease); }
 .st.current .st-dot { border-color: var(--primary); box-shadow: inset 0 0 0 5px #fff; background: var(--primary); animation: pulseRing 1.6s infinite; }
 .st-line { position: absolute; top: 12px; left: calc(50% + 16px); right: calc(-50% + 16px); height: 2px; background: var(--border); }
-.st.done .st-line { background: linear-gradient(90deg, #16a34a, var(--border)); }
+.st.done .st-line { background: linear-gradient(90deg, var(--success), var(--border)); }
 .info-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--muted); }
 .info-row svg { width: 18px; height: 18px; flex-shrink: 0; }
 .info-row .btn { margin-left: auto; }

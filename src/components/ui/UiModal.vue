@@ -28,7 +28,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 </script>
 
 <style scoped>
-.overlay { position: fixed; inset: 0; z-index: 90; background: rgba(19, 19, 47, 0.45); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; }
+.overlay { position: fixed; inset: 0; z-index: 90; background: rgba(46, 42, 34, 0.45); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; }
 .modal { width: 100%; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; }
 .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 6px; }
 .modal-body { padding: 10px 20px 20px; }

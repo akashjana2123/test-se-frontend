@@ -19,9 +19,9 @@ function move(e) {
 .spot { position: relative; overflow: hidden; transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s; }
 .spot::before {
   content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s;
-  background: radial-gradient(260px circle at var(--x) var(--y), rgba(79, 70, 229, 0.09), transparent 70%);
+  background: radial-gradient(260px circle at var(--x) var(--y), rgba(var(--primary-rgb), 0.12), transparent 70%);
 }
-.spot:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #cfd0f5; }
+.spot:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #ead7ae; }
 .spot:hover::before { opacity: 1; }
 .spot > * { position: relative; }
 </style>

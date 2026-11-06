@@ -58,6 +58,8 @@ function toggle(r) {
 
 <style scoped>
 .cats { margin-bottom: 18px; }
+.cats .chip:hover { border-color: var(--info); color: var(--info); }
+.cats .chip.active { background: var(--info-bg); border-color: var(--info); color: var(--info); }
 .res { padding: 0; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.35s var(--ease), box-shadow 0.35s; }
 .res:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .thumb { position: relative; height: 130px; overflow: hidden; }
@@ -70,7 +72,7 @@ function toggle(r) {
 .ic { width: 13px; height: 13px; }
 .save { border: 0; background: none; padding: 4px; color: var(--muted); border-radius: 8px; transition: all 0.2s; }
 .save svg { width: 18px; height: 18px; }
-.save:hover { color: var(--primary); background: var(--primary-50); }
+.save:hover { color: var(--primary-600); background: var(--primary-50); }
 .save.on { color: var(--primary); }
 .save.on svg { fill: currentColor; animation: pop 0.3s var(--ease); }
 </style>

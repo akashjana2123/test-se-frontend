@@ -41,5 +41,5 @@ watch(() => [props.modelValue, props.tabs], () => nextTick(move), { deep: true }
 .indicator { position: absolute; top: 4px; left: 0; height: calc(100% - 8px); background: var(--surface); border-radius: 9px; box-shadow: var(--shadow-sm); transition: transform 0.35s var(--ease), width 0.35s var(--ease); }
 .tab { position: relative; z-index: 1; border: 0; background: none; padding: 7px 14px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: color 0.2s; }
 .tab.active { color: var(--text); }
-.count { font-size: 11px; background: var(--primary-50); color: var(--primary); padding: 1px 7px; border-radius: 999px; }
+.count { font-size: 11px; background: var(--primary-50); color: var(--primary-text); padding: 1px 7px; border-radius: 999px; }
 </style>

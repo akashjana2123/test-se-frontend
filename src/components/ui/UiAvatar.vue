@@ -16,7 +16,7 @@ const props = defineProps({
   online: Boolean
 })
 
-const palette = [['#eef0ff', '#4f46e5'], ['#e7faf6', '#0f766e'], ['#fff1e6', '#c2410c'], ['#fdf2f8', '#be185d'], ['#eff6ff', '#1d4ed8'], ['#f5f3ff', '#6d28d9']]
+const palette = [['#fbf4e6', '#8f6a1e'], ['#f6f0e5', '#4a4438'], ['#f4e5c6', '#7a5a17'], ['#efe8da', '#6b6559'], ['#e6f0ff', '#2563eb'], ['#fbf1dc', '#9a7424']]
 const initials = computed(() => props.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase())
 const style = computed(() => {
   const [bg, fg] = palette[props.name.length % palette.length]
@@ -27,5 +27,5 @@ const style = computed(() => {
 <style scoped>
 .avatar { position: relative; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; font-weight: 700; }
 .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-.online { position: absolute; right: 0; bottom: 0; width: 28%; height: 28%; min-width: 9px; min-height: 9px; border-radius: 50%; background: #22c55e; border: 2px solid #fff; }
+.online { position: absolute; right: 0; bottom: 0; width: 28%; height: 28%; min-width: 9px; min-height: 9px; border-radius: 50%; background: var(--success); border: 2px solid #fff; }
 </style>

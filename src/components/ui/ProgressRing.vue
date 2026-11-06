@@ -11,7 +11,7 @@
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue'
 
-const props = defineProps({ value: Number, size: { type: Number, default: 56 }, stroke: { type: Number, default: 6 }, color: { type: String, default: '#4f46e5' } })
+const props = defineProps({ value: Number, size: { type: Number, default: 56 }, stroke: { type: Number, default: 6 }, color: { type: String, default: '#d5a64a' } })
 const c = computed(() => props.size / 2)
 const r = computed(() => (props.size - props.stroke) / 2)
 const len = computed(() => 2 * Math.PI * r.value)

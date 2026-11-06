@@ -44,7 +44,7 @@ export const commonApi = {
   getPublicStats: () => request({ url: '/public/stats' }, () => ({ mentors: 150, areas: 10, sessions: 500, feedback: 90 })),
 
   // GET /public/mentors (featured mentors on landing page)
-  getFeaturedMentors: () => request({ url: '/public/mentors' }, () => db.mentors.filter((m) => m.id !== 'm1').slice(0, 4))
+  getFeaturedMentors: () => request({ url: '/public/mentors' }, () => db.mentors.filter((m) => m.id !== 'm1' && m.accountStatus !== 'suspended').slice(0, 4))
 }
 
 /* ---------------- Student ---------------- */
@@ -59,7 +59,7 @@ export const studentApi = {
   // GET /mentors?q=&domain=&availability=&sort=&goal=
   getMentors: (params = {}) => request({ url: '/mentors', params }, () => {
     const q = (params.q || '').toLowerCase()
-    let list = db.mentors.filter((m) =>
+    let list = db.mentors.filter((m) => m.accountStatus !== 'suspended' &&
       (!q || [m.name, m.title, m.company, ...m.tags].join(' ').toLowerCase().includes(q)) &&
       (!params.domain || m.domain === params.domain) &&
       (!params.goal || m.goals.includes(params.goal)) &&
@@ -131,12 +131,15 @@ export const mentorApi = {
   // GET /mentor/requests
   getRequests: () => request({ url: '/mentor/requests' }, () => db.incomingRequests),
 
+  // GET /mentor/students/:id  (profile of a student who sent a request / is a mentee)
+  getStudentProfile: (id) => request({ url: `/mentor/students/${id}` }, () => byId(db.studentProfiles, id) || fail('Student profile not found')),
+
   // PATCH /mentor/requests/:id  { status: 'accepted' | 'declined', reason }
   respond: (id, status, reason = '') => request({ url: `/mentor/requests/${id}`, method: 'PATCH', data: { status, reason } }, () => {
     const r = byId(db.incomingRequests, id)
     if (status === 'accepted') {
       if (db.mentees.length >= db.availability.maxMentees) fail('You are at full capacity. Increase capacity in Availability.')
-      db.mentees.push({ id: 'me' + Date.now(), name: r.name, avatar: r.avatar, course: r.course, institute: r.institute, goal: r.goal, nextSession: 'Not scheduled', lastNote: '—', progress: 5 })
+      db.mentees.push({ id: 'me' + Date.now(), studentId: r.studentId, name: r.name, avatar: r.avatar, course: r.course, institute: r.institute, goal: r.goal, nextSession: 'Not scheduled', lastNote: '—', progress: 5 })
     }
     Object.assign(r, { status, reason })
     return r
@@ -144,6 +147,27 @@ export const mentorApi = {
 
   // GET /mentor/mentees
   getMentees: () => request({ url: '/mentor/mentees' }, () => ({ list: db.mentees, capacity: db.availability.maxMentees })),
+
+  // GET /mentor/conversations -> [{ mentee, lastMessage }]
+  getConversations: () => request({ url: '/mentor/conversations' }, () =>
+    db.mentees.map((m) => {
+      const msgs = db.mentorChats[m.id] || []
+      return { mentee: m, lastMessage: msgs[msgs.length - 1] || null }
+    })),
+
+  // GET /mentor/conversations/:menteeId -> { mentee, messages }
+  getConversation: (menteeId) => request({ url: `/mentor/conversations/${menteeId}` }, () => {
+    const mentee = byId(db.mentees, menteeId) || fail('Mentee not found')
+    return { mentee, messages: db.mentorChats[menteeId] || [] }
+  }),
+
+  // POST /mentor/conversations/:menteeId/messages  { text }
+  sendMessage: (menteeId, text) => request({ url: `/mentor/conversations/${menteeId}/messages`, method: 'POST', data: { text } }, () => {
+    if (!byId(db.mentees, menteeId)) fail('Mentee not found')
+    const msg = { from: 'mentor', text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+    ;(db.mentorChats[menteeId] ||= []).push(msg)
+    return msg
+  }),
 
   // GET /mentor/sessions
   getSessions: () => request({ url: '/mentor/sessions' }, () => ({ list: db.mentorSessions, mentees: db.mentees.map((m) => m.name) })),
@@ -156,18 +180,88 @@ export const mentorApi = {
   })
 }
 
+/* ---------------- Admin helpers (mock only) ---------------- */
+const ROHIT = 'm1' // mentor whose mentees live in db.mentees / db.incomingRequests
+
+// Every student with their mentorship state:
+// active (has a mentor now) · completed (accepted earlier, not current) · pending (request waiting) · unmatched
+function allMentees() {
+  return db.studentProfiles.map((s) => {
+    const mentee = db.mentees.find((m) => m.studentId === s.id)
+    const req = db.incomingRequests.find((r) => r.studentId === s.id)
+    let status = 'unmatched'
+    let mentorId = null
+    if (mentee) { status = 'active'; mentorId = ROHIT }
+    else if (s.mentorId) { status = 'active'; mentorId = s.mentorId }
+    else if (req?.status === 'pending') { status = 'pending'; mentorId = ROHIT }
+    else if (req?.status === 'accepted') { status = 'completed'; mentorId = ROHIT }
+    const mentor = mentorId ? byId(db.mentors, mentorId) : null
+    return {
+      ...s,
+      accountStatus: s.accountStatus || 'active',
+      status,
+      mentor: mentor ? { id: mentor.id, name: mentor.name, avatar: mentor.avatar, title: mentor.title } : null,
+      progress: mentee?.progress ?? null,
+      nextSession: mentee?.nextSession || null
+    }
+  })
+}
+
+function allMentors() {
+  const students = allMentees()
+  return db.mentors.map((m) => {
+    const mentees = students.filter((s) => s.mentor?.id === m.id && s.status === 'active')
+    return {
+      ...m,
+      accountStatus: m.accountStatus || 'active',
+      capacity: m.id === ROHIT ? db.availability.maxMentees : m.capacity ?? 3,
+      activeMentees: mentees.length,
+      menteeList: mentees.map((s) => ({ id: s.id, name: s.name, avatar: s.avatar, careerGoal: s.careerGoal })),
+      pendingRequests: students.filter((s) => s.mentor?.id === m.id && s.status === 'pending').length
+    }
+  })
+}
+
 /* ---------------- Admin ---------------- */
 export const adminApi = {
+  // GET /admin/mentors-list   (approved mentors with their current load)
+  getAllMentors: () => request({ url: '/admin/mentors-list' }, allMentors),
+
+  // GET /admin/mentees   (all students with mentorship status)
+  getAllMentees: () => request({ url: '/admin/mentees' }, allMentees),
+
+  // GET /admin/students/:id
+  getStudentProfile: (id) => request({ url: `/admin/students/${id}` }, () => byId(db.studentProfiles, id) || fail('Student profile not found')),
+
+  // PATCH /admin/users/:id/status  { role: 'mentor' | 'student', accountStatus: 'active' | 'suspended' }
+  setAccountStatus: (id, role, accountStatus) => request({ url: `/admin/users/${id}/status`, method: 'PATCH', data: { role, accountStatus } }, () => {
+    const u = byId(role === 'mentor' ? db.mentors : db.studentProfiles, id) || fail('User not found')
+    u.accountStatus = accountStatus
+    return u
+  }),
+
   // GET /admin/overview
   getOverview: () => request({ url: '/admin/overview' }, () => ({
     stats: {
       ...db.adminStats,
       pendingMentors: db.mentorApplications.filter((a) => a.status === 'pending').length,
-      pendingGoals: db.careerGoalRequests.filter((g) => g.status === 'pending').length,
       openConcerns: db.concerns.filter((c) => ['Open', 'Under review'].includes(c.status)).length
     },
     requestStatus: db.requestStatus,
-    trend: db.participation
+    trend: db.participation,
+    directory: (() => {
+      const mentors = allMentors()
+      const mentees = allMentees()
+      return {
+        mentors: mentors.length,
+        availableMentors: mentors.filter((m) => m.available).length,
+        mentorAvatars: mentors.slice(0, 4).map((m) => ({ name: m.name, avatar: m.avatar })),
+        mentees: mentees.length,
+        activeMentees: mentees.filter((s) => s.status === 'active').length,
+        unmatchedMentees: mentees.filter((s) => s.status === 'unmatched').length,
+        menteeAvatars: mentees.slice(0, 4).map((s) => ({ name: s.name, avatar: s.avatar }))
+      }
+    })()
   })),
 
   // GET /admin/mentor-applications?status=
@@ -181,16 +275,6 @@ export const adminApi = {
     const a = byId(db.mentorApplications, id); a.status = status
     if (status === 'approved') db.adminStats.approvedMentors++
     return a
-  }),
-
-  // GET /admin/career-goals
-  getCareerGoals: () => request({ url: '/admin/career-goals' }, () => ({ requests: db.careerGoalRequests, approved: db.approvedGoals })),
-
-  // PATCH /admin/career-goals/:id  { status }
-  decideCareerGoal: (id, status) => request({ url: `/admin/career-goals/${id}`, method: 'PATCH', data: { status } }, () => {
-    const g = byId(db.careerGoalRequests, id); g.status = status
-    if (status === 'approved' && !db.approvedGoals.includes(g.goal)) db.approvedGoals.push(g.goal)
-    return g
   }),
 
   // GET /admin/participation

@@ -99,7 +99,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   House, User, Search, Inbox, MessageSquare, BookOpen, Settings, LogOut, Bell, Menu, X, ChevronDown, Sparkles,
-  LayoutDashboard, CalendarDays, Users, NotebookPen, UserCheck, Target, ChartBar, Flag
+  LayoutDashboard, CalendarDays, Users, NotebookPen, UserCheck, ChartBar, Flag, Briefcase, GraduationCap
 } from '@lucide/vue'
 import AppLogo from './AppLogo.vue'
 import UiAvatar from '@/components/ui/UiAvatar.vue'
@@ -129,13 +129,15 @@ const NAV = {
     { to: '/mentor/availability', label: 'Availability', icon: CalendarDays },
     { to: '/mentor/requests', label: 'Mentee Requests', icon: Inbox },
     { to: '/mentor/mentees', label: 'My Mentees', icon: Users },
+    { to: '/mentor/messages', label: 'Messages', icon: MessageSquare },
     { to: '/mentor/sessions', label: 'Sessions', icon: NotebookPen },
     { to: '/mentor/resources', label: 'Resources', icon: BookOpen }
   ],
   admin: [
     { to: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
     { to: '/admin/mentors', label: 'Mentor Approvals', icon: UserCheck },
-    { to: '/admin/goals', label: 'Career Goals', icon: Target },
+    { to: '/admin/all-mentors', label: 'All Mentors', icon: Briefcase },
+    { to: '/admin/all-mentees', label: 'All Mentees', icon: GraduationCap },
     { to: '/admin/participation', label: 'Participation', icon: ChartBar },
     { to: '/admin/concerns', label: 'Reports', icon: Flag }
   ]
@@ -196,19 +198,21 @@ const vClickOutside = {
 .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; transition: transform 0.3s var(--ease); }
 .nav-item:hover { background: var(--surface-2); color: var(--text); }
 .nav-item:hover svg { transform: translateX(2px); }
-.nav-item.active { background: var(--primary-50); color: var(--primary); }
+.nav-item.active { background: var(--primary-50); color: var(--primary-text); }
+.nav-item.active svg { color: var(--primary); }
 .nav-item.active::before { content: ''; position: absolute; left: -14px; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--primary); animation: pop 0.3s var(--ease); }
 .side-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
-.side-quote { margin-bottom: 10px; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #eef0ff, #e7faf6); font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+.side-quote { margin-bottom: 10px; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-50), #fdf9f1); font-size: 12.5px; font-weight: 600; color: var(--text-2); }
 .side-quote svg { width: 18px; height: 18px; color: var(--primary); margin-bottom: 6px; }
 
 /* admin = dark sidebar */
 .is-admin .sidebar { background: linear-gradient(180deg, var(--navy), var(--navy-2)); border-right: 0; }
-.is-admin .role-pill { color: #a5a6d6; }
-.is-admin .nav-item { color: #c9caf0; }
+.is-admin .role-pill { color: #c9bda5; }
+.is-admin .nav-item { color: #e6dccb; }
 .is-admin .nav-item:hover { background: rgba(255, 255, 255, 0.07); color: #fff; }
-.is-admin .nav-item.active { background: rgba(255, 255, 255, 0.12); color: #fff; }
-.is-admin .nav-item.active::before { background: #2dd4bf; }
+.is-admin .nav-item.active { background: rgba(var(--primary-rgb), 0.18); color: #fff; }
+.is-admin .nav-item.active svg { color: var(--primary); }
+.is-admin .nav-item.active::before { background: var(--primary); }
 .is-admin .close-btn { color: #fff; }
 
 /* ---- main ---- */
@@ -217,7 +221,7 @@ const vClickOutside = {
   position: sticky; top: 0; z-index: 30;
   display: flex; align-items: center; gap: 12px;
   height: 64px; padding: 0 28px;
-  background: rgba(246, 246, 251, 0.82); backdrop-filter: blur(10px);
+  background: rgba(250, 246, 239, 0.85); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
 .menu-btn { display: none; }
@@ -258,7 +262,7 @@ const vClickOutside = {
 @media (max-width: 960px) {
   .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform 0.35s var(--ease); box-shadow: var(--shadow-lg); }
   .open .sidebar { transform: none; }
-  .scrim { display: block; position: fixed; inset: 0; background: rgba(19, 19, 47, 0.4); z-index: 35; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .scrim { display: block; position: fixed; inset: 0; background: rgba(46, 42, 34, 0.4); z-index: 35; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
   .open .scrim { opacity: 1; pointer-events: auto; }
   .close-btn, .menu-btn { display: inline-flex; }
   .topbar { padding: 0 16px; }

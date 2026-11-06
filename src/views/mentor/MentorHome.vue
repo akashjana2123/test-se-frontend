@@ -45,7 +45,7 @@
       <div class="grow">
         <h4>Mentee capacity</h4>
         <p class="small muted">{{ d.mentees }} of {{ d.capacity }} spaces filled</p>
-        <div class="progress mt-2"><span :style="{ width: (d.mentees / d.capacity) * 100 + '%', background: d.mentees >= d.capacity ? '#f59e0b' : '#14b8a6' }" /></div>
+        <div class="progress mt-2"><span :style="{ width: (d.mentees / d.capacity) * 100 + '%', background: d.mentees >= d.capacity ? '#d32f2f' : '#d5a64a' }" /></div>
       </div>
       <RouterLink to="/mentor/availability" class="btn btn-outline">Manage availability</RouterLink>
     </div>
@@ -70,7 +70,7 @@ onMounted(async () => (d.value = await mentorApi.getDashboard()))
 <style scoped>
 .row { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 10px; transition: background 0.2s; color: inherit; }
 .link-row:hover { background: var(--surface-2); }
-.when { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--primary); background: var(--primary-50); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.when { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--primary-text); background: var(--primary-50); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
 .when svg { width: 14px; height: 14px; }
 .capacity { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 @media (max-width: 600px) { .when { display: none; } }

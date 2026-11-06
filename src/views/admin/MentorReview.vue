@@ -38,7 +38,7 @@
               </label>
             </div>
             <p class="small muted mt-3">{{ verified }}/{{ total }} checks complete</p>
-            <div class="progress mt-1"><span :style="{ width: total ? (verified / total) * 100 + '%' : 0, background: '#16a34a' }" /></div>
+            <div class="progress mt-1"><span :style="{ width: total ? (verified / total) * 100 + '%' : 0, background: '#2e7d32' }" /></div>
           </div>
         </Transition>
       </div>
@@ -113,7 +113,7 @@ async function decide(status) {
 .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .check-row { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-weight: 550; cursor: pointer; transition: all 0.2s; }
 .check-row span:nth-child(2) { flex: 1; }
-.check-row.ok { border-color: #bbf7d0; background: #f0fdf4; }
+.check-row.ok { border-color: #c8e6c9; background: var(--success-bg); }
 .flow { list-style: none; margin: 12px 0 0; padding: 0 0 0 22px; position: relative; display: flex; flex-direction: column; gap: 14px; }
 .flow::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
 .flow li { position: relative; display: flex; flex-direction: column; opacity: 0.55; transition: opacity 0.3s; }

@@ -2,7 +2,7 @@
   <div class="auth-page">
     <div class="auth-card">
       <aside class="panel">
-        <AppLogo light />
+        <AppLogo />
         <h2 class="fade-up">Career guidance,<br />made more personal.</h2>
         <div class="features stagger">
           <span><Users /> Meaningful</span>
@@ -41,7 +41,7 @@
               <span v-if="loading" class="spinner" /> <template v-else>Sign in <ArrowRight /></template>
             </button>
           </form>
-
+<!-- Remove below two div -->
           <div class="or"><span>or try a demo account</span></div>
           <div class="demo">
             <button v-for="d in demos" :key="d.email" class="demo-btn" :disabled="loading" @click="quick(d.email)">
@@ -83,6 +83,7 @@ const show = ref(false)
 const loading = ref(false)
 const error = ref('')
 
+// remove this demo
 const demos = [
   { label: 'Student', email: 'student@demo.com', icon: GraduationCap },
   { label: 'Mentor', email: 'mentor@demo.com', icon: HeartHandshake },
@@ -112,13 +113,13 @@ function quick(addr) {
 </script>
 
 <style scoped>
-.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 15% 10%, #e0e3ff, transparent 40%), radial-gradient(circle at 90% 90%, #ccfbf1, transparent 35%), var(--bg); }
+.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 15% 10%, var(--primary-100), transparent 40%), radial-gradient(circle at 90% 90%, #f3e9d6, transparent 35%), var(--bg); }
 .auth-card { width: 100%; max-width: 1040px; display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); border-radius: 26px; overflow: hidden; box-shadow: var(--shadow-lg); animation: pop 0.6s var(--ease); }
-.panel { position: relative; display: flex; flex-direction: column; padding: 36px 36px 0; background: linear-gradient(160deg, #1b1a5e, #3b2fc9 70%, #4f46e5); color: #fff; overflow: hidden; }
-.panel h2 { color: #fff; font-size: 1.9rem; font-weight: 750; margin-top: 30px; }
-.features { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 22px; font-size: 13.5px; font-weight: 550; color: #dcdcfb; }
+.panel { position: relative; display: flex; flex-direction: column; padding: 36px 36px 0; background: linear-gradient(160deg, #fdf9f1, #f8eedb 70%, #f4e2bd); color: var(--text); overflow: hidden; }
+.panel h2 { color: var(--text); font-size: 1.9rem; font-weight: 750; margin-top: 30px; }
+.features { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 22px; font-size: 13.5px; font-weight: 550; color: var(--text-2); }
 .features span { display: inline-flex; align-items: center; gap: 8px; }
-.features svg { width: 30px; height: 30px; padding: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.95); color: #4f46e5; }
+.features svg { width: 30px; height: 30px; padding: 7px; border-radius: 50%; background: #fff; color: var(--primary); box-shadow: var(--shadow-sm); }
 .ill { margin-top: auto; width: calc(100% + 72px); margin-left: -36px; max-width: none; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%); mask-image: linear-gradient(to bottom, transparent, #000 18%); }
 
 .form-side { padding: 44px 48px; display: flex; align-items: center; }
